@@ -15,3 +15,8 @@
 //= require turbolinks
 //= require kinetic-v4.7.4.min
 //= require_tree .
+
+$(function(){
+    Taalgrensen.init();
+    Taalgrensen._.activate();
+});
