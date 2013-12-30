@@ -7,7 +7,21 @@ class Taal
   constructor: (naam, data, kleur) ->
     @naam = naam
     @paths = new Array()
-    @paths.push(new Kinetic.Path({ data: d, fill: kleur, stroke: '#555', strokeWidth: 1 })) for d in data
+    @definieren(naam, d, kleur) for d in data
+
+  definieren: (naam, data, kleur) ->
+    path =  new Kinetic.Path { data: data, fill: kleur, stroke: '#555', strokeWidth: 1 }
+    path.on 'mouseover', ->
+      $taal = $ 'h3'
+      $taal.text naam
+      $taal.removeClass(c) for c in  ['frans', 'nederlands', 'duits', 'brussel']
+      $taal.addClass naam.split(' ')[0].toLowerCase()
+    path.on 'mouseout', ->
+      $taal = $ 'h3'
+      $taal.text 'Frans'
+      $taal.removeClass(c) for c in  ['frans', 'nederlands', 'duits', 'brussel']
+      $taal.addClass 'frans'
+    @paths.push path
 
   moveTo: (kaart) ->
     path.moveTo(kaart) for path in @paths
@@ -35,10 +49,10 @@ class @Taalgrensen
     ]
 
   activate: ->
-    @stage.add @kaart
     @belgie.moveTo @kaart
     taal.moveTo(@kaart) for taal in @talen
     @kaart.drawScene()
+    @stage.add @kaart
 
   @init: ->
     @_ = new Taalgrensen()
